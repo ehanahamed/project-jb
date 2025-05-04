@@ -1,0 +1,16 @@
+[Unit]
+Description=Project JB    
+After=network.target
+StartLimitBurst=3
+StartLimitIntervalSec=10
+ 
+[Service]
+Restart=always
+RestartSec=1
+WorkingDirectory=/root/project-jb/server/
+Environment="NODE_ENV=production"
+ExecStart=/usr/bin/node index.js
+TimeoutStopSec=1
+ 
+[Install]
+WantedBy=multi-user.target
