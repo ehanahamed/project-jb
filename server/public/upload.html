@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h2>Upload an Image</h2>
+    <form id="uploadForm">
+      <input type="file" id="fileInput" name="file" accept="image/*" />
+      <button type="submit">Upload</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+      const form = document.getElementById('uploadForm');
+      const result = document.getElementById('result');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+        if (!file) return alert('No file selected');
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+          const response = await fetch('/upload', {
+            method: 'POST',
+            body: formData,
+          });
+
+          const data = await response.json();
+          result.innerHTML = `
+            <p>File uploaded successfully!</p>
+            <img src="${data.url}" style="max-width: 300px;" />
+          `;
+        } catch (err) {
+          console.error('Upload failed', err);
+          result.textContent = 'Upload failed';
+        }
+      });
+    </script>
+  </body>
+</html>

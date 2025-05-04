@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import { randomUUID } from 'crypto';
 import mime from 'mime-types';
+import fastifyStatic from '@fastify/static';
 
 const PORT = parseInt(process.env.PORT ?? "3000")
 
@@ -12,6 +13,10 @@ const uploadDir = path.join(process.cwd(), 'uploads');
 const logDir = path.join(process.cwd(), 'logs');
 
 await fastify.register(multipart);
+await fastify.register(fastifyStatic, {
+  root: path.join(process.cwd(), 'public'),
+  prefix: '/', /* `public/file.html` will be accessible at `/file.html` */
+});
 
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
