@@ -33,6 +33,8 @@ fastify.get('/uploads/:filename', async (request, reply) => {
     return reply.code(404).send('File not found');
   }
 
+  logReq(request, filename)
+
   const mimeType = mime.lookup(filePath) || 'application/octet-stream';
   reply.type(mimeType);
 
@@ -42,7 +44,7 @@ fastify.get('/uploads/:filename', async (request, reply) => {
 async function logReq(req, filename) {
   const filePath = path.join(logDir, filename);
   let logs = [];
-  if (fs.existsSync(filename)) {
+  if (fs.existsSync(filePath)) {
     const raw = fs.readFileSync(filePath, 'utf-8');
     logs = JSON.parse(raw);
   }
@@ -51,7 +53,7 @@ async function logReq(req, filename) {
     ip: req.ip,
     headers: req.headers,
   })
-  fs.writeFileSync(logFile, JSON.stringify(logs, null, 2));
+  fs.writeFileSync(filePath, JSON.stringify(logs, null, 2));
 }
 
 fastify.get("/server/logs/:filename", async (request, reply) => {
