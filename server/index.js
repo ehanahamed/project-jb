@@ -6,6 +6,7 @@ import { randomUUID } from 'crypto';
 import mime from 'mime-types';
 import fastifyStatic from '@fastify/static';
 
+const HOST = process.env.HOST ?? "localhost"
 const PORT = parseInt(process.env.PORT ?? "3000")
 
 const fastify = Fastify();
@@ -85,7 +86,11 @@ import { pipeline } from 'stream';
 import { promisify } from 'util';
 const pump = promisify(pipeline);
 
-fastify.listen({ port: PORT }, (err, address) => {
+fastify.get("/", function (req, reply) {
+  reply.redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+})
+
+fastify.listen({ host: HOST, port: PORT }, (err, address) => {
   if (err) throw err;
   console.log('Server listening on ' + address);
 });
