@@ -54,7 +54,7 @@ async function logReq(req, filename) {
   fs.writeFileSync(logFile, JSON.stringify(logs, null, 2));
 }
 
-fastify.get("/server/logs/:filename", async (req, reply) => {
+fastify.get("/server/logs/:filename", async (request, reply) => {
   const filename = request.params.filename;
   const filePath = path.join(logDir, filename);
   if (!fs.existsSync(filePath)) {

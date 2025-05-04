@@ -24,16 +24,21 @@
         formData.append('file', file);
 
         try {
-          const response = await fetch('/upload', {
+          const response = await fetch('/server/upload', {
             method: 'POST',
             body: formData,
           });
 
           const data = await response.json();
+          if (data?.url) {
           result.innerHTML = `
             <p>File uploaded successfully!</p>
             <img src="${data.url}" style="max-width: 300px;" />
           `;
+          } else {
+            console.error("Upload failed")
+          result.textContent = 'Upload failed';
+          }
         } catch (err) {
           console.error('Upload failed', err);
           result.textContent = 'Upload failed';
