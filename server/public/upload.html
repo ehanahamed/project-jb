@@ -34,7 +34,6 @@
 </div>
       <button class="button is-primary" type="submit">Upload</button>
     </form>
-
     <div id="result" style="margin-top:1rem;"></div>
 </section>
 <footer class="footer">
@@ -68,7 +67,7 @@
           if (data?.url) {
           result.innerHTML = `
             <p>File uploaded successfully!</p>
-            <img src="${data.url}" style="max-width: 300px;" />
+            <img src="${data.url}" style="max-width: 60vw; max-height: 60vw;" />
           `;
           } else {
             console.error("Upload failed")
