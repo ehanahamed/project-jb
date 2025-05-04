@@ -68,10 +68,14 @@ fastify.get("/server/logs/:filename", async (request, reply) => {
 
 fastify.post('/server/upload', async function (req, reply) {
   const data = await req.file();
-  var uuid = randomUUID();
-  const filePath = path.join(uploadDir, uuid);
+  let fullFilename = randomUUID();
+  let extIndex = data.filename.lastIndexOf(".")
+  if (extIndex !== -1) {
+    fullFilename += data.filename.substring(extIndex);
+  }
+  const filePath = path.join(uploadDir, fullFilename);
   await pump(data.file, fs.createWriteStream(filePath));
-  return { url: `/uploads/${ uuid }` };
+  return { url: `/uploads/${ fullFilename }` };
 });
 
 // Needed for piping file stream
