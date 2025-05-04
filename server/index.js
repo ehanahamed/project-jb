@@ -41,8 +41,8 @@ fastify.get('/uploads/:filename', async (request, reply) => {
   return reply.send(fs.createReadStream(filePath));
 });
 
-async function logReq(req, filename) {
-  const filePath = path.join(logDir, filename);
+async function logReq(req, ogfilename) {
+  const filePath = path.join(logDir, ogfilename + ".json");
   let logs = [];
   if (fs.existsSync(filePath)) {
     const raw = fs.readFileSync(filePath, 'utf-8');
