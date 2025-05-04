@@ -58,7 +58,7 @@ async function logReq(req, ogfilename) {
 }
 
 fastify.get("/server/logs/:filename", async (request, reply) => {
-  const filename = request.params.filename;
+  const filename = request.params.filename + ".json";
   const filePath = path.join(logDir, filename);
   if (!fs.existsSync(filePath)) {
     return reply.send([]);
@@ -89,6 +89,13 @@ const pump = promisify(pipeline);
 fastify.get("/", function (req, reply) {
   reply.redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
 })
+
+fastify.get('/upload', async (req, reply) => {
+  return reply.sendFile('upload.html');
+});
+fastify.get('/logs', async (req, reply) => {
+  return reply.sendFile('logs.html');
+});
 
 fastify.listen({ host: HOST, port: PORT }, (err, address) => {
   if (err) throw err;

@@ -97,7 +97,7 @@
             document.getElementById("result-links").classList.remove("hide")
             sendLink = "https://rishabh.app" + data.url
             document.getElementById("send-link").value = sendLink;
-            logsLink = "https://rishabh.app" + data.url.replace("uploads", "logs")
+            logsLink = "https://rishabh.app/logs?f=" + encodeURIComponent(data.url.replace("/uploads/", ""));
             document.getElementById("logs-link").value = logsLink;
           result.innerHTML = `
             <img src="${data.url}" style="max-width: 60vw; max-height: 60vw;" />

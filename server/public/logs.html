@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="stylesheet" href="/css/bulma.min.css" />
+      <link rel="stylesheet" href="/fa/css/fontawesome.min.css" />
+      <link rel="stylesheet" href="/fa/css/solid.min.css" />
+      <style>
+        :root {
+          color-scheme: light;
+        }
+        @media (prefers-color-scheme: dark) {
+          :root {
+            color-scheme: dark;
+          }
+        }
+        .hide {
+          display: none;
+        }
+        .details-list {
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+      </style>
+  </head>
+  <body>
+    <section class="section" style="min-height: 90vh;">
+        <p>All devices that load the image are logged, so you might have logged yourself, or possibly other unintended people if you sent it to a groupchat. Check the time & device to figure out which one(s) are unintended.</p>
+        <div id="list" class="details-list"></div>
+</section>
+<footer class="footer">
+  <div class="content has-text-centered">
+    <p>
+      Made at <strong>ERA Meth Lab</strong>
+    </p>
+  </div>
+</footer>
+    <script src="/fancytimestamp.js"></script>
+    <script>
+        var urlParams = new URLSearchParams(window.location.search);
+        var file = urlParams.get('f');
+        fetch("/server/logs/" + file).then(function (raw) {
+            raw.json().then(function (res) {
+                console.log(res)
+                for (var index = res.length - 1; index >= 0; index--) {
+                    var details = document.createElement("details");
+                    var summary = document.createElement("summary");
+                    var timestamp = fancyTimestamp.format(new Date(res[index].timestamp))
+                    summary.innerHTML = `
+                        ${ timestamp } </br>
+                        IP: <code>${ res[index].ip }</code>`
+
+                    var pre = document.createElement("pre");
+                    var code = document.createElement("code");
+                    code.innerHTML = JSON.stringify(res[index], null, 2)
+                    pre.appendChild(code)
+                    details.appendChild(summary);
+                    details.appendChild(pre)
+                    document.getElementById("list").appendChild(details)
+                }
+            })
+        })
+    </script>
+  </body>
+</html>
