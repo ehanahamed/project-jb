@@ -15,6 +15,9 @@
             color-scheme: dark;
           }
         }
+        .hide {
+          display: none;
+        }
       </style>
   </head>
   <body>
@@ -34,6 +37,32 @@
 </div>
       <button class="button is-primary" type="submit">Upload</button>
     </form>
+    <div id="result-links" class="hide" style="margin-top: 1rem;">
+      <h2>Send this link</h2>
+      <div class="field has-addons">
+        <div class="control">
+          <input class="input" id="send-link" type="text" placeholder="link">
+        </div>
+        <div class="control">
+          <button class="button" id="send-link-copy">
+            <span class="icon"><i class="fa-solid fa-copy"></i></span>
+            <span>Copy</span>
+          </button>
+        </div>
+      </div>
+      <h2>Save this link to check their logged info after they see the gif/image</h2>
+      <div class="field has-addons">
+        <div class="control">
+          <input class="input" id="logs-link" type="text" placeholder="link">
+        </div>
+        <div class="control">
+          <button class="button" id="logs-link-copy">
+            <span class="icon"><i class="fa-solid fa-copy"></i></span>
+            <span>Copy</span>
+          </button>
+        </div>
+      </div>
+    </div>
     <div id="result" style="margin-top:1rem;"></div>
 </section>
 <footer class="footer">
@@ -65,8 +94,12 @@
 
           const data = await response.json();
           if (data?.url) {
+            document.getElementById("result-links").classList.remove("hide")
+            sendLink = "https://rishabh.app" + data.url
+            document.getElementById("send-link").value = sendLink;
+            logsLink = "https://rishabh.app" + data.url.replace("uploads", "logs")
+            document.getElementById("logs-link").value = logsLink;
           result.innerHTML = `
-            <p>File uploaded successfully!</p>
             <img src="${data.url}" style="max-width: 60vw; max-height: 60vw;" />
           `;
           } else {
@@ -78,6 +111,30 @@
           result.textContent = 'Upload failed';
         }
       });
+      var sendLink = "";
+      document.getElementById("send-link").addEventListener("input", function () {
+        document.getElementById("send-link").value = sendLink
+      })
+      var logsLink = "";
+      document.getElementById("logs-link").addEventListener("input", function () {
+        document.getElementById("logs-link").value = logsLink
+      })
+      document.getElementById("send-link-copy").addEventListener("click", function () {
+        var copyText = document.getElementById("send-link");
+        // Select the text field
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); // For mobile devices
+         // Copy the text inside the text field
+        navigator.clipboard.writeText(copyText.value);
+      })
+      document.getElementById("logs-link-copy").addEventListener("click", function () {
+        var copyText = document.getElementById("logs-link");
+        // Select the text field
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); // For mobile devices
+         // Copy the text inside the text field
+        navigator.clipboard.writeText(copyText.value);
+      })
     </script>
   </body>
 </html>
