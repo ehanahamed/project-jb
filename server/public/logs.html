@@ -28,7 +28,7 @@
   </head>
   <body>
     <section class="section" style="min-height: 90vh;">
-        <p>All devices that load the image are logged, so you might have logged yourself, or possibly other unintended people if you sent it to a groupchat. Check the time & device to figure out which one(s) are unintended.</p>
+        <p>All devices that load the image are logged, so you might have logged yourself, or possibly other unintended people if you sent it to a groupchat. Check the time & device to figure out which one(s) are unintended. Sometimes discord hides their device type :(</p>
         <div id="list" class="details-list"></div>
 </section>
 <footer class="footer">
@@ -49,9 +49,14 @@
                     var details = document.createElement("details");
                     var summary = document.createElement("summary");
                     var timestamp = fancyTimestamp.format(new Date(res[index].timestamp))
+                    var ip = res[index].ip
+                    if (res[index].headers.has("x-forwarded-for")) {
+                        ip = res[index].headers["x-forwarded-for"];
+                    }
                     summary.innerHTML = `
-                        ${ timestamp } </br>
-                        IP: <code>${ res[index].ip }</code>`
+                        ${ timestamp } <br>
+                        IP: <code>${ ip }</code><br>
+                    `;
 
                     var pre = document.createElement("pre");
                     var code = document.createElement("code");
