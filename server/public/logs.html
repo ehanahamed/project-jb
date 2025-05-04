@@ -50,7 +50,7 @@
                     var summary = document.createElement("summary");
                     var timestamp = fancyTimestamp.format(new Date(res[index].timestamp))
                     var ip = res[index].ip
-                    if (res[index].headers.has("x-forwarded-for")) {
+                    if (res[index]?.headers.hasOwnProperty("x-forwarded-for")) {
                         ip = res[index].headers["x-forwarded-for"];
                     }
                     summary.innerHTML = `
